@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kundenportal - Bestelldetails</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <img src="https://www.mueller-manufaktur.com/site/assets/files/1070/logo-mueller-manufaktur-big.png" alt="Müller Manufaktur Logo" class="logo">
+        <div class="account-icon" onclick="goToAccount()" title="Mein Konto">
+            👤
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="order-details-header">
+            <h1>Bestelldetails</h1>
+        </div>
+
+        <div class="order-info-container">
+            <div class="order-info">
+                <!-- Order info will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <div class="order-details-container">
+            <h2>Bestellte Artikel</h2>
+            <div class="order-details-items">
+                <!-- Order items will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <div class="order-details-actions">
+            <button class="btn" onclick="reorderFromDetails()">Erneut bestellen</button>
+            <button class="btn" onclick="goToDashboard()">Zurück zum Dashboard</button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

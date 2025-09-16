@@ -12,6 +12,152 @@ const defaultUserData = {
     email: 'chefkoch@zumloewen.ch'
 };
 
+// Sample order data
+const sampleOrders = [
+    {
+        id: 'ORD-2025-001',
+        date: '15.01.2025',
+        status: 'completed',
+        total: 1000,
+        items: [
+            {
+                id: 'lsz19',
+                title: 'Latzschürze Premium',
+                productNumber: 'Art.-Nr.: LSZ-19',
+                quantity: 4,
+                price: 85,
+                color: 'Schwarz',
+                total: 340,
+                imageSrc: 'https://mueller-trade.com/wp-content/uploads/sites/2/4044_6400_010_V-533x800.jpg'
+            },
+            {
+                id: 'kh03',
+                title: 'Herren Kochhose',
+                productNumber: 'Art.-Nr.: KH-03',
+                quantity: 3,
+                price: 120,
+                color: 'Schwarz',
+                total: 360,
+                imageSrc: 'https://mueller-trade.com/wp-content/uploads/sites/2/5321_8000_010_R_.jpg'
+            },
+            {
+                id: 'bnd01',
+                title: 'Bandana',
+                productNumber: 'Art.-Nr.: BND-01',
+                quantity: 12,
+                price: 25,
+                color: 'Schwarz',
+                total: 300,
+                imageSrc: 'https://mueller-trade.com/wp-content/uploads/sites/2/5710_6220_010-1.jpg'
+            }
+        ]
+    },
+    {
+        id: 'ORD-2025-002',
+        date: '28.02.2025',
+        status: 'in-progress',
+        total: 1000,
+        items: [
+            {
+                id: 'kj16',
+                title: 'Herren Kochjacke Langarm',
+                productNumber: 'Art.-Nr.: KJ-16',
+                quantity: 5,
+                price: 150,
+                color: 'Weiß',
+                total: 750,
+                imageSrc: 'https://mueller-trade.com/wp-content/uploads/sites/2/5581_8000_090_V.jpg'
+            },
+            {
+                id: 'lsz18',
+                title: 'Latzschürze Classic',
+                productNumber: 'Art.-Nr.: LSZ-18',
+                quantity: 2,
+                price: 75,
+                color: 'Braun',
+                total: 150,
+                imageSrc: 'https://mueller-trade.com/wp-content/uploads/sites/2/LS-25_1_b_front.jpg'
+            },
+            {
+                id: 'bnd01',
+                title: 'Bandana',
+                productNumber: 'Art.-Nr.: BND-01',
+                quantity: 4,
+                price: 25,
+                color: 'Rot',
+                total: 100,
+                imageSrc: 'https://mueller-trade.com/wp-content/uploads/sites/2/5710_6220_010-1.jpg'
+            }
+        ]
+    },
+    {
+        id: 'ORD-2025-003',
+        date: '15.05.2025',
+        status: 'completed',
+        total: 1000,
+        items: [
+            {
+                id: 'lsz19',
+                title: 'Latzschürze Premium',
+                productNumber: 'Art.-Nr.: LSZ-19',
+                quantity: 6,
+                price: 85,
+                color: 'Weiß',
+                total: 510,
+                imageSrc: 'https://mueller-trade.com/wp-content/uploads/sites/2/4044_6400_010_V-533x800.jpg'
+            },
+            {
+                id: 'kh03',
+                title: 'Herren Kochhose',
+                productNumber: 'Art.-Nr.: KH-03',
+                quantity: 2,
+                price: 120,
+                color: 'Grau',
+                total: 240,
+                imageSrc: 'https://mueller-trade.com/wp-content/uploads/sites/2/5321_8000_010_R_.jpg'
+            },
+            {
+                id: 'kj16',
+                title: 'Herren Kochjacke Langarm',
+                productNumber: 'Art.-Nr.: KJ-16',
+                quantity: 1,
+                price: 150,
+                color: 'Weiß',
+                total: 150,
+                imageSrc: 'https://mueller-trade.com/wp-content/uploads/sites/2/5581_8000_090_V.jpg'
+            },
+            {
+                id: 'bnd01',
+                title: 'Bandana',
+                productNumber: 'Art.-Nr.: BND-01',
+                quantity: 4,
+                price: 25,
+                color: 'Schwarz',
+                total: 100,
+                imageSrc: 'https://mueller-trade.com/wp-content/uploads/sites/2/5710_6220_010-1.jpg'
+            }
+        ]
+    }
+];
+
+// Initialize order data in localStorage if not exists
+function initializeOrderData() {
+    if (!localStorage.getItem('orderHistory')) {
+        localStorage.setItem('orderHistory', JSON.stringify(sampleOrders));
+    }
+}
+
+// Get order history from localStorage
+function getOrderHistory() {
+    const orders = localStorage.getItem('orderHistory');
+    return orders ? JSON.parse(orders) : sampleOrders;
+}
+
+// Get specific order by ID
+function getOrderById(orderId) {
+    const orders = getOrderHistory();
+    return orders.find(order => order.id === orderId);
+}
 // Cart storage
 let currentCart = [];
 
@@ -79,6 +225,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check authentication on page load
     checkAuth();
     
+    // Initialize order data
+    initializeOrderData();
+    
     // Load user data for account page
     if (window.location.pathname.includes('account.html')) {
         populateAccountForm();
@@ -91,6 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize new order page
     if (window.location.pathname.includes('new-order.html')) {
+        loadCartFromStorage();
         updateCartTotal();
         updateBasketIcon();
     }
@@ -98,6 +248,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize order overview page
     if (window.location.pathname.includes('order-overview.html')) {
         loadOrderOverview();
+    }
+    
+    // Initialize order details page
+    if (window.location.pathname.includes('order-details.html')) {
+        loadOrderDetails();
     }
     
     // Update basket icon on all pages
@@ -290,17 +445,29 @@ function newOrder() {
 }
 
 function showDetails(orderNumber) {
-    showToast('Bestelldetails werden geladen...', 'info');
-    setTimeout(() => {
-        alert('Details für Bestellung: ' + orderNumber + '\n\nDies würde eine detaillierte Ansicht der Bestellung öffnen.');
-    }, 800);
+    if (localStorage.getItem('authenticated') === 'true') {
+        localStorage.setItem('selectedOrderId', orderNumber);
+        window.location.href = 'order-details.html';
+    } else {
+        window.location.href = 'index.html';
+    }
 }
 
 function orderAgain(orderNumber) {
-    showToast('Artikel werden zum Warenkorb hinzugefügt...', 'info');
-    setTimeout(() => {
-        alert('Erneut bestellen: ' + orderNumber + '\n\nDies würde die gleichen Artikel für eine neue Bestellung zum Warenkorb hinzufügen.');
-    }, 800);
+    if (localStorage.getItem('authenticated') === 'true') {
+        const order = getOrderById(orderNumber);
+        if (order) {
+            // Clear current cart and add order items
+            currentCart = [...order.items];
+            localStorage.setItem('currentCart', JSON.stringify(currentCart));
+            showToast('Artikel wurden zum Warenkorb hinzugefügt!', 'success');
+            setTimeout(() => {
+                window.location.href = 'new-order.html';
+            }, 1000);
+        }
+    } else {
+        window.location.href = 'index.html';
+    }
 }
 
 function changePassword() {
@@ -353,6 +520,26 @@ function sortTable(columnIndex) {
 }
 
 // New Order functions
+function loadCartFromStorage() {
+    const savedCart = localStorage.getItem('currentCart');
+    if (savedCart) {
+        currentCart = JSON.parse(savedCart);
+        // Populate form fields with cart data
+        currentCart.forEach(item => {
+            const qtyInput = document.getElementById('qty-' + item.id);
+            if (qtyInput) {
+                qtyInput.value = item.quantity;
+                
+                // Set color selection
+                const colorRadio = document.querySelector(`input[name="color-${item.id}"][value="${item.color}"]`);
+                if (colorRadio) {
+                    colorRadio.checked = true;
+                }
+            }
+        });
+    }
+}
+
 function changeQuantity(productId, change) {
     const qtyInput = document.getElementById('qty-' + productId);
     const currentQty = parseInt(qtyInput.value);
@@ -519,6 +706,20 @@ function confirmOrder() {
         
         // Simulate order processing
         setTimeout(() => {
+            // Create new order
+            const newOrder = {
+                id: 'ORD-' + new Date().getFullYear() + '-' + String(Date.now()).slice(-3),
+                date: new Date().toLocaleDateString('de-DE'),
+                status: 'in-progress',
+                total: totalAmount,
+                items: [...cart]
+            };
+            
+            // Add to order history
+            const orders = getOrderHistory();
+            orders.unshift(newOrder);
+            localStorage.setItem('orderHistory', JSON.stringify(orders));
+            
             showToast('Bestellung erfolgreich aufgegeben! Gesamtsumme: ' + totalAmount + ' CHF', 'success');
             
             // Clear cart
@@ -532,6 +733,99 @@ function confirmOrder() {
     }
 }
 
+// Order details functions
+function loadOrderDetails() {
+    const orderId = localStorage.getItem('selectedOrderId');
+    if (!orderId) {
+        goToDashboard();
+        return;
+    }
+    
+    const order = getOrderById(orderId);
+    if (!order) {
+        showToast('Bestellung nicht gefunden', 'error');
+        goToDashboard();
+        return;
+    }
+    
+    // Update page title and header
+    document.title = `Kundenportal - Bestelldetails ${order.id}`;
+    const headerElement = document.querySelector('.order-details-header h1');
+    if (headerElement) {
+        headerElement.textContent = `Bestelldetails ${order.id}`;
+    }
+    
+    // Update order info
+    const orderInfoElement = document.querySelector('.order-info');
+    if (orderInfoElement) {
+        const statusClass = order.status === 'completed' ? 'completed' : 'in-progress';
+        const statusText = order.status === 'completed' ? 'abgeschlossen' : 'in Bearbeitung';
+        
+        orderInfoElement.innerHTML = `
+            <div class="order-info-item">
+                <span class="order-info-label">Bestellnummer:</span>
+                <span class="order-info-value">${order.id}</span>
+            </div>
+            <div class="order-info-item">
+                <span class="order-info-label">Datum:</span>
+                <span class="order-info-value">${order.date}</span>
+            </div>
+            <div class="order-info-item">
+                <span class="order-info-label">Status:</span>
+                <span class="status ${statusClass}">${statusText}</span>
+            </div>
+            <div class="order-info-item">
+                <span class="order-info-label">Gesamtsumme:</span>
+                <span class="order-info-value">${order.total} CHF</span>
+            </div>
+        `;
+    }
+    
+    // Update items list
+    const itemsContainer = document.querySelector('.order-details-items');
+    if (itemsContainer) {
+        let itemsHTML = '';
+        
+        order.items.forEach(item => {
+            itemsHTML += `
+                <div class="order-detail-item">
+                    <div class="order-detail-item-image">
+                        <img src="${item.imageSrc}" alt="${item.title}" 
+                             onerror="this.src='https://images.pexels.com/photos/6205509/pexels-photo-6205509.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop'">
+                    </div>
+                    <div class="order-detail-item-info">
+                        <div class="order-detail-item-name">${item.title}</div>
+                        <div class="order-detail-item-details">${item.productNumber}</div>
+                        <div class="order-detail-item-details">Farbe: ${item.color}</div>
+                        <div class="order-detail-item-details">Menge: ${item.quantity}</div>
+                        <div class="order-detail-item-details">Einzelpreis: ${item.price} CHF</div>
+                    </div>
+                    <div class="order-detail-item-price">
+                        ${item.total} CHF
+                    </div>
+                </div>
+            `;
+        });
+        
+        itemsHTML += `
+            <div class="order-details-total">
+                <span class="order-details-total-label">Gesamtsumme: ${order.total} CHF</span>
+            </div>
+        `;
+        
+        itemsContainer.innerHTML = itemsHTML;
+    }
+}
+
+function reorderFromDetails() {
+    const orderId = localStorage.getItem('selectedOrderId');
+    if (!orderId) {
+        goToDashboard();
+        return;
+    }
+    
+    orderAgain(orderId);
+}
 function updateSortIndicator(table, columnIndex, isAscending) {
     // Remove existing sort indicators
     const headers = table.querySelectorAll('th');
