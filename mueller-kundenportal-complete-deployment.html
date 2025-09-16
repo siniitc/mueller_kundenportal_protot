@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Müller Manufaktur - Kundenportal (Complete)</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            background-color: #ffffff;
+            color: #000;
+            line-height: 1.4;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            padding-top: 80px;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 12px 20px;
+            border-bottom: 1px solid #ddd;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .account-icon {
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .account-icon:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            transform: scale(1.1);
+        }
+
+        .logo {
+            height: 48px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .basket-icon {
+            position: relative;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .basket-icon:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            transform: scale(1.1);
+        }
+
+        .basket-symbol {
+            font-size: 20px;
+        }
+
+        .basket-count {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+            min-width: 18px;
+        }
+
+        .basket-count.hidden {
+            display: none;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        /* Button Styles */
+        .btn, .btn-small {
+            line-height: 1;
+            padding: 0.25em 0.9em !important;
+            font-weight: 600;
+            border-radius: 0;
+            background-color: transparent !important;
+            color: #000;
+            border: 1px solid #000;
+            display: inline-block;
+            cursor: pointer;
+            text-decoration: none;
+            font-family: inherit;
+            font-size: 0.9em;
+            margin: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before, .btn-small::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-small {
+            font-size: 0.8em;
+            padding: 0.2em 0.6em !important;
+        }
+
+        .btn:hover, .btn-small:hover {
+            background-color: #000 !important;
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:hover::before, .btn-small:hover::before {
+            left: 100%;
+        }
+
+        .btn:active, .btn-small:active {
+            transform: translateY(0);
+        }
+
+        .logout-btn {
+            margin-top: 20px;
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+
+        .logout-btn:hover {
+            background-color: #dc3545 !important;
+            color: #fff;
+        }
+
+        /* Login Page */
+        .login-container {
+            max-width: 320px;
+            margin: 40px auto;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(10px);
+        }
+
+        .login-container h1 {
+            margin-bottom: 8px;
+            font-size: 2em;
+            background: linear-gradient(135deg, #000 0%, #333 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-container h2 {
+            margin-bottom: 24px;
+            font-weight: 400;
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .login-form {
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            font-size: 0.9em;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #000;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-group input[readonly] {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .form-actions {
+            margin-top: 16px;
+            display: flex;
+            gap: 8px;
+            justify-content: flex-start;
+        }
+
+        .account-form .form-group {
+            margin-bottom: 16px;
+        }
+
+        .change-password-form {
+            max-width: 320px;
+        }
+
+        .change-password-form .form-group {
+            margin-bottom: 16px;
+        }
+
+        .forgot-password {
+            margin-top: 16px;
+        }
+
+        .forgot-link {
+            color: #666;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-link:hover {
+            color: #000;
+        }
+
+        /* Dashboard */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .welcome-section h1 {
+            font-size: 2em;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #000 0%, #333 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .budget-section {
+            text-align: right;
+        }
+
+        .budget-info {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 16px;
+            border: 1px solid #000;
+            min-width: 200px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .budget-info:hover {
+            transform: translateY(-2px);
+        }
+
+        .budget-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .budget-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .budget-label {
+            font-weight: 500;
+        }
+
+        .budget-value {
+            font-weight: 600;
+        }
+
+        .budget-value.remaining {
+            color: #28a745;
+            font-size: 1em;
+        }
+
+        .action-buttons {
+            margin-bottom: 32px;
+        }
+
+        /* Orders Section */
+        .orders-section {
+            margin-bottom: 32px;
+        }
+
+        .orders-section h2 {
+            margin-bottom: 16px;
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+            font-size: 0.9em;
+        }
+
+        .orders-table th,
+        .orders-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .orders-table th {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .orders-table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .orders-table tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            transform: scale(1.01);
+        }
+
+        .sortable {
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+
+        .sortable:hover {
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+        }
+
+        .status {
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status.completed {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.in-progress {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .actions {
+            white-space: nowrap;
+        }
+
+        .new-order-section {
+            text-align: center;
+            margin-bottom: 32px;
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            border: 1px dashed #ddd;
+            transition: all 0.3s ease;
+        }
+
+        .new-order-section:hover {
+            border-color: #000;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .logout-section {
+            text-align: center;
+            margin-top: 40px;
+            border-top: 1px solid #eee;
+            padding-top: 24px;
+        }
+
+        /* Account Page */
+        .account-header h1 {
+            font-size: 2em;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #000 0%, #333 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .account-info {
+            margin-bottom: 32px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .info-section, .budget-section-account {
+            margin-bottom: 24px;
+        }
+
+        .info-section h2, .budget-section-account h2 {
+            margin-bottom: 12px;
+            font-size: 1.3em;
+            color: #333;
+            border-bottom: 1px solid #000;
+            padding-bottom: 8px;
+        }
+
+        .info-grid, .budget-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .info-item, .budget-item-account {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        .info-item:hover, .budget-item-account:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            padding-left: 8px;
+        }
+
+        .info-item label, .budget-item-account label {
+            font-weight: 500;
+            min-width: 100px;
+        }
+
+        .remaining-budget {
+            color: #28a745;
+            font-weight: 600;
+            font-size: 1em;
+        }
+
+        .account-actions {
+            margin-bottom: 24px;
+        }
+
+        /* Error Page */
+        .error-container {
+            max-width: 400px;
+            margin: 40px auto;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .error-container h1 {
+            font-size: 2em;
+            margin-bottom: 24px;
+            color: #dc3545;
+            text-shadow: 2px 2px 4px rgba(220, 53, 69, 0.1);
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 16px;
+            margin-bottom: 24px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.08);
+        }
+
+        .error-message p {
+            font-size: 1em;
+            font-weight: 500;
+        }
+
+        .error-actions {
+            margin-top: 24px;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            border-top-color: #000;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Success Message */
+        .success-message {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.08);
+            font-size: 0.9em;
+        }
+
+        /* Notification Toast */
+        .toast {
+            position: fixed;
+            top: 90px;
+            right: 16px;
+            background: #000;
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 6px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transform: translateX(320px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            font-size: 0.9em;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background: #28a745;
+        }
+
+        .toast.error {
+            background: #dc3545;
+        }
+
+        .toast.info {
+            background: #17a2b8;
+        }
+
+        /* Hidden sections */
+        .hidden {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+                font-size: 13px;
+            }
+            
+            .header {
+                padding: 10px 16px;
+            }
+            
+            .logo {
+                height: 40px;
+            }
+            
+            .main-content {
+                padding: 16px 12px;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .budget-section {
+                text-align: left;
+                width: 100%;
+            }
+            
+            .orders-table {
+                font-size: 0.8em;
+            }
+            
+            .actions {
+                white-space: normal;
+            }
+            
+            .btn-small {
+                font-size: 0.7em;
+                padding: 0.15em 0.5em !important;
+                margin: 1px;
+            }
+            
+            .login-container, .error-container {
+                margin: 20px auto;
+                padding: 24px 16px;
+            }
+            
+            .account-info {
+                padding: 16px;
+            }
+            
+            .toast {
+                top: 70px;
+                right: 8px;
+                left: 8px;
+                transform: translateY(-80px);
+            }
+            
+            .toast.show {
+                transform: translateY(0);
+            }
+            
+            .basket-icon {
+                padding: 6px;
+            }
+            
+            .basket-symbol {
+                font-size: 18px;
+            }
+            
+            .basket-count {
+                width: 16px;
+                height: 16px;
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <img src="https://www.mueller-manufaktur.com/site/assets/files/1070/logo-mueller-manufaktur-big.png" alt="Müller Manufaktur Logo" class="logo">
+        <div id="accountIcon" class="account-icon hidden" onclick="showAccount()" title="Mein Konto">👤</div>
+        <div id="basketIcon" class="basket-icon hidden" onclick="showToast('Warenkorb wird geladen...', 'info')">
+            <span class="basket-symbol">🛒</span>
+            <span class="basket-count" id="basketCount">0</span>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Login Section -->
+        <div id="loginSection" class="login-container">
+            <h1>Kundenportal</h1>
+            <h2>Anmeldung</h2>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">E-Mail-Adresse:</label>
+                    <input type="text" id="username" name="username" required placeholder="chefkoch@zumloewen.ch">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Passwort:</label>
+                    <input type="password" id="password" name="password" required placeholder="Filet">
+                </div>
+                
+                <button type="submit" class="btn">Anmelden</button>
+            </form>
+            
+            <div class="forgot-password">
+                <a href="#" class="forgot-link" onclick="showForgotPassword()">Passwort vergessen?</a>
+            </div>
+            
+            <!-- Debug info -->
+            <div style="margin-top: 20px; padding: 10px; background: #f0f0f0; font-size: 12px; border-radius: 4px;">
+                <strong>Test Credentials:</strong><br>
+                Email: chefkoch@zumloewen.ch<br>
+                Password: Filet
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboardSection" class="hidden">
+            <div class="dashboard-header">
+                <div class="welcome-section">
+                    <h1>Willkommen zurück, Peter</h1>
+                </div>
+                <div class="budget-section">
+                    <div class="budget-info">
+                        <div class="budget-item">
+                            <span class="budget-label">Jahresbudget:</span>
+                            <span class="budget-value">5000 CHF</span>
+                        </div>
+                        <div class="budget-item">
+                            <span class="budget-label">Verbleibendes Budget:</span>
+                            <span class="budget-value remaining">3000 CHF</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="new-order-section">
+                <h3>Bereit für eine neue Bestellung?</h3>
+                <p>Durchsuchen Sie ihr Sortiment und bestellen Sie Materialien innerhalb Ihres Budgets</p>
+                <button class="btn" onclick="showNewOrder()">Neue Bestellung</button>
+            </div>
+
+            <div class="orders-section">
+                <h2>Übersicht der letzten Bestellungen</h2>
+                <div class="table-container">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Datum</th>
+                                <th>Bestellnummer</th>
+                                <th>Status</th>
+                                <th>Betrag</th>
+                                <th>Aktionen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>15.01.2025</td>
+                                <td>ORD-2025-001</td>
+                                <td><span class="status completed">abgeschlossen</span></td>
+                                <td>1000 CHF</td>
+                                <td class="actions">
+                                    <button class="btn-small" onclick="showOrderDetails('ORD-2025-001')">Details</button>
+                                    <button class="btn-small" onclick="orderAgain('ORD-2025-001')">Erneut bestellen</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>28.02.2025</td>
+                                <td>ORD-2025-002</td>
+                                <td><span class="status in-progress">in Bearbeitung</span></td>
+                                <td>1000 CHF</td>
+                                <td class="actions">
+                                    <button class="btn-small" onclick="showOrderDetails('ORD-2025-002')">Details</button>
+                                    <button class="btn-small" onclick="orderAgain('ORD-2025-002')">Erneut bestellen</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>15.05.2025</td>
+                                <td>ORD-2025-003</td>
+                                <td><span class="status completed">abgeschlossen</span></td>
+                                <td>1000 CHF</td>
+                                <td class="actions">
+                                    <button class="btn-small" onclick="showOrderDetails('ORD-2025-003')">Details</button>
+                                    <button class="btn-small" onclick="orderAgain('ORD-2025-003')">Erneut bestellen</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="logout-section">
+                <button class="btn logout-btn" onclick="logout()">Abmelden</button>
+            </div>
+        </div>
+
+        <!-- Account Section -->
+        <div id="accountSection" class="hidden">
+            <div class="account-header">
+                <h1>Mein Konto verwalten</h1>
+            </div>
+
+            <div class="account-info">
+                <div class="info-section">
+                    <h2>Persönliche Informationen</h2>
+                    <form id="accountForm" class="account-form">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" id="name" name="name" value="Peter Müller">
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Unternehmen:</label>
+                            <input type="text" id="company" name="company" value="Zum Löwen">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Adresse:</label>
+                            <input type="text" id="address" name="address" value="Dorfstrasse 1, 8274 Tägerwilen">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-Mail-Adresse:</label>
+                            <input type="email" id="email" name="email" value="chefkoch@zumloewen.ch" readonly>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn">Speichern</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="account-actions">
+                <button class="btn" onclick="showChangePassword()">Passwort ändern</button>
+                <button class="btn" onclick="showDashboard()">Zurück zum Dashboard</button>
+            </div>
+
+            <div class="logout-section">
+                <button class="btn logout-btn" onclick="logout()">Abmelden</button>
+            </div>
+        </div>
+
+        <!-- Forgot Password Section -->
+        <div id="forgotPasswordSection" class="login-container hidden">
+            <h1>Passwort vergessen</h1>
+            <h2>Hilfe beim Anmelden</h2>
+            
+            <p style="margin-bottom: 30px; color: #666; text-align: left;">
+                Es sieht so aus, als bräuchten Sie Hilfe beim Anmelden. Bitte geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen den Wiederherstellungslink.
+            </p>
+            
+            <form id="forgotPasswordForm">
+                <div class="form-group">
+                    <label for="forgotEmail">E-Mail-Adresse:</label>
+                    <input type="email" id="forgotEmail" name="forgotEmail" required>
+                </div>
+                
+                <button type="submit" class="btn">Wiederherstellungslink senden</button>
+            </form>
+            
+            <div class="forgot-password">
+                <a href="#" class="forgot-link" onclick="showLogin()">Zurück zur Anmeldung</a>
+            </div>
+        </div>
+
+        <!-- Error Section -->
+        <div id="errorSection" class="error-container hidden">
+            <h1>Anmeldefehler</h1>
+            <div class="error-message">
+                <p>Benutzername oder Passwort falsch!</p>
+            </div>
+            <div class="error-actions">
+                <button class="btn" onclick="showLogin()">Zurück zur Anmeldung</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // User credentials
+        const validUser = {
+            username: 'chefkoch@zumloewen.ch',
+            password: 'Filet'
+        };
+
+        // Default user data
+        const defaultUserData = {
+            name: 'Peter Müller',
+            company: 'Zum Löwen',
+            address: 'Dorfstrasse 1, 8274 Tägerwilen',
+            email: 'chefkoch@zumloewen.ch'
+        };
+
+        // Sample order data
+        const sampleOrders = [
+            {
+                id: 'ORD-2025-001',
+                date: '15.01.2025',
+                status: 'completed',
+                total: 1000,
+                items: [
+                    {
+                        id: 'lsz19',
+                        title: 'Latzschürze Premium',
+                        productNumber: 'Art.-Nr.: LSZ-19',
+                        quantity: 4,
+                        price: 85,
+                        color: 'Schwarz',
+                        total: 340
+                    },
+                    {
+                        id: 'kh03',
+                        title: 'Herren Kochhose',
+                        productNumber: 'Art.-Nr.: KH-03',
+                        quantity: 3,
+                        price: 120,
+                        color: 'Schwarz',
+                        total: 360
+                    },
+                    {
+                        id: 'bnd01',
+                        title: 'Bandana',
+                        productNumber: 'Art.-Nr.: BND-01',
+                        quantity: 12,
+                        price: 25,
+                        color: 'Schwarz',
+                        total: 300
+                    }
+                ]
+            }
+        ];
+
+        // Toast notification function
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
+        }
+
+        // Load user data from localStorage or use defaults
+        function loadUserData() {
+            const savedData = localStorage.getItem('userData');
+            return savedData ? JSON.parse(savedData) : { ...defaultUserData };
+        }
+
+        // Save user data to localStorage
+        function saveUserData(userData) {
+            localStorage.setItem('userData', JSON.stringify(userData));
+        }
+
+        // Check authentication
+        function checkAuth() {
+            const isAuthenticated = localStorage.getItem('authenticated') === 'true';
+            if (isAuthenticated) {
+                showDashboard();
+            } else {
+                showLogin();
+            }
+        }
+
+        // Show different sections
+        function showLogin() {
+            hideAllSections();
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('accountIcon').classList.add('hidden');
+            document.getElementById('basketIcon').classList.add('hidden');
+        }
+
+        function showDashboard() {
+            hideAllSections();
+            document.getElementById('dashboardSection').classList.remove('hidden');
+            document.getElementById('accountIcon').classList.remove('hidden');
+            document.getElementById('basketIcon').classList.add('hidden');
+        }
+
+        function showAccount() {
+            hideAllSections();
+            document.getElementById('accountSection').classList.remove('hidden');
+            document.getElementById('accountIcon').classList.remove('hidden');
+            document.getElementById('basketIcon').classList.add('hidden');
+            
+            // Populate form with saved data
+            const userData = loadUserData();
+            document.getElementById('name').value = userData.name;
+            document.getElementById('company').value = userData.company;
+            document.getElementById('address').value = userData.address;
+            document.getElementById('email').value = userData.email;
+        }
+
+        function showForgotPassword() {
+            hideAllSections();
+            document.getElementById('forgotPasswordSection').classList.remove('hidden');
+            document.getElementById('accountIcon').classList.add('hidden');
+            document.getElementById('basketIcon').classList.add('hidden');
+        }
+
+        function showError() {
+            hideAllSections();
+            document.getElementById('errorSection').classList.remove('hidden');
+            document.getElementById('accountIcon').classList.add('hidden');
+            document.getElementById('basketIcon').classList.add('hidden');
+        }
+
+        function hideAllSections() {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('dashboardSection').classList.add('hidden');
+            document.getElementById('accountSection').classList.add('hidden');
+            document.getElementById('forgotPasswordSection').classList.add('hidden');
+            document.getElementById('errorSection').classList.add('hidden');
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('authenticated');
+            localStorage.removeItem('hasLoggedInBefore');
+            showToast('Sie wurden abgemeldet', 'info');
+            showLogin();
+        }
+
+        // Placeholder functions
+        function showNewOrder() {
+            showToast('Bestellfunktion wird geladen...', 'info');
+        }
+
+        function showOrderDetails(orderId) {
+            showToast(`Bestelldetails für ${orderId} werden geladen...`, 'info');
+        }
+
+        function orderAgain(orderId) {
+            showToast(`Artikel aus Bestellung ${orderId} werden zum Warenkorb hinzugefügt...`, 'success');
+        }
+
+        function showChangePassword() {
+            showToast('Passwort-Änderung wird geladen...', 'info');
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Customer Portal loaded');
+            
+            // Check authentication
+            checkAuth();
+            
+            // Login form handler
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const submitBtn = loginForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.innerHTML = originalText + '<span class="loading"></span>';
+                    submitBtn.disabled = true;
+                    
+                    const username = document.getElementById('username').value;
+                    const password = document.getElementById('password').value;
+                    
+                    console.log('Login attempt:', { username, password });
+                    
+                    // Simulate loading time
+                    setTimeout(() => {
+                        if (username === validUser.username && password === validUser.password) {
+                            console.log('Login successful');
+                            localStorage.setItem('authenticated', 'true');
+                            showToast('Anmeldung erfolgreich!', 'success');
+                            setTimeout(() => {
+                                showDashboard();
+                            }, 1000);
+                        } else {
+                            console.log('Login failed');
+                            submitBtn.innerHTML = originalText;
+                            submitBtn.disabled = false;
+                            showError();
+                        }
+                    }, 1500);
+                });
+            }
+
+            // Account form handler
+            const accountForm = document.getElementById('accountForm');
+            if (accountForm) {
+                accountForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Get form data
+                    const userData = {
+                        name: document.getElementById('name').value,
+                        company: document.getElementById('company').value,
+                        address: document.getElementById('address').value,
+                        email: document.getElementById('email').value
+                    };
+                    
+                    // Save to localStorage
+                    saveUserData(userData);
+                    
+                    showToast('Persönliche Informationen wurden gespeichert!', 'success');
+                });
+            }
+
+            // Forgot password form handler
+            const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+            if (forgotPasswordForm) {
+                forgotPasswordForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const submitBtn = forgotPasswordForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.innerHTML = originalText + '<span class="loading"></span>';
+                    submitBtn.disabled = true;
+                    
+                    const email = document.getElementById('forgotEmail').value;
+                    
+                    setTimeout(() => {
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                        showToast('Wiederherstellungslink wurde an ' + email + ' gesendet!', 'success');
+                        setTimeout(() => {
+                            showLogin();
+                        }, 2000);
+                    }, 1500);
+                });
+            }
+
+            // Add welcome message on first login
+            const isFirstLogin = !localStorage.getItem('hasLoggedInBefore');
+            if (localStorage.getItem('authenticated') === 'true' && isFirstLogin) {
+                setTimeout(() => {
+                    showToast('Willkommen in Ihrem Kundenportal, Peter!', 'success');
+                    localStorage.setItem('hasLoggedInBefore', 'true');
+                }, 500);
+            }
+        });
+    </script>
+</body>
+</html>
