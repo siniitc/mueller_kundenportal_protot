@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Portal - Login</title>
+    <title>Kundenportal - Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <img src="https://www.mueller-manufaktur.com/site/assets/files/1070/logo-mueller-manufaktur-big.png" alt="Müller Manufaktur Logo" class="logo">
+    </header>
+
+    <main class="main-content">
+        <div class="login-container">
+            <h1>Kundenportal</h1>
+            <h2>Anmeldung</h2>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">E-Mail-Adresse:</label>
+                    <input type="text" id="username" name="username" required placeholder="chefkoch@zumloewen.ch">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Passwort:</label>
+                    <input type="password" id="password" name="password" required placeholder="Filet">
+                </div>
+                
+                <button type="submit" class="btn">Anmelden</button>
+            </form>
+            
+            <div class="forgot-password">
+                <a href="forgot-password.html" class="forgot-link">Passwort vergessen?</a>
+            </div>
+            
+            <!-- Debug info -->
+            <div style="margin-top: 20px; padding: 10px; background: #f0f0f0; font-size: 12px; border-radius: 4px;">
+                <strong>Test Credentials:</strong><br>
+                Email: chefkoch@zumloewen.ch<br>
+                Password: Filet
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // Additional debug script
+        window.addEventListener('load', function() {
+            console.log('Window loaded');
+            console.log('Login form exists:', !!document.getElementById('loginForm'));
+            console.log('Script loaded:', typeof validUser !== 'undefined');
+        });
+    </script>
+</body>
+</html>

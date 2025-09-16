@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Portal - My Account</title>
+    <title>Kundenportal - My Account</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <img src="https://www.mueller-manufaktur.com/site/assets/files/1070/logo-mueller-manufaktur-big.png" alt="Müller Manufaktur Logo" class="logo">
+    </header>
+
+    <main class="main-content">
+        <div class="account-header">
+            <h1>Mein Konto verwalten</h1>
+        </div>
+
+        <div class="account-info">
+            <div class="info-section">
+                <h2>Persönliche Informationen</h2>
+                <form id="accountForm" class="account-form">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" value="Peter Müller">
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Unternehmen:</label>
+                        <input type="text" id="company" name="company" value="Zum Löwen">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Adresse:</label>
+                        <input type="text" id="address" name="address" value="Dorfstrasse 1, 8274 Tägerwilen">
+                    </div>
+                    <div class="form-group">
+                        <label for="username">E-Mail-Adresse:</label>
+                        <input type="email" id="username" name="username" value="chefkoch@zumloewen.ch" readonly>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn">Speichern</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="account-actions">
+            <button class="btn" onclick="changePassword()">Passwort ändern</button>
+            <button class="btn" onclick="goToDashboard()">Zurück zum Dashboard</button>
+        </div>
+
+        <div class="logout-section">
+            <button class="btn logout-btn" onclick="logout()">Abmelden</button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
