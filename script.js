@@ -218,9 +218,12 @@ function checkAuth() {
     const isAuthenticated = localStorage.getItem('authenticated') === 'true';
     const currentPage = window.location.pathname.split('/').pop();
     
-    console.log('Checking auth:', { isAuthenticated, currentPage });
+    console.log('Checking auth:', { isAuthenticated, currentPage, pathname: window.location.pathname });
     
-    if (!isAuthenticated && currentPage !== 'index.html' && currentPage !== 'error.html' && currentPage !== '') {
+    // Allow access to login page and error page when not authenticated
+    const allowedPages = ['index.html', 'error.html', 'forgot-password.html', ''];
+    if (!isAuthenticated && !allowedPages.includes(currentPage)) {
+        console.log('Redirecting to login - not authenticated');
         window.location.href = 'index.html';
     }
 }
@@ -228,6 +231,7 @@ function checkAuth() {
 // Login form handler
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM Content Loaded');
+    console.log('Current page:', window.location.pathname);
     
     // Check authentication on page load
     checkAuth();
@@ -320,8 +324,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }, 1500);
         });
-    } else {
-        console.log('Login form not found');
         
         // Add input validation feedback
         const inputs = loginForm.querySelectorAll('input');
@@ -338,6 +340,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.style.borderColor = '#000';
             });
         });
+    } else {
+        console.log('Login form not found');
     }
     
     // Forgot password form handler
