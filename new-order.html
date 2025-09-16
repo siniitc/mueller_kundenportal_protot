@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kundenportal - Neue Bestellung</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <img src="https://www.mueller-manufaktur.com/site/assets/files/1070/logo-mueller-manufaktur-big.png" alt="Müller Manufaktur Logo" class="logo">
+    </header>
+
+    <main class="main-content">
+        <div class="order-header">
+            <h1>Neue Bestellung</h1>
+            <p>Wählen Sie aus unserem Sortiment die gewünschten Artikel aus</p>
+        </div>
+
+        <div class="order-summary">
+            <div class="budget-display">
+                <span class="budget-label">Verfügbares Budget:</span>
+                <span class="budget-value">3000 CHF</span>
+            </div>
+            <div class="cart-total">
+                <span class="total-label">Gesamtsumme:</span>
+                <span class="total-value" id="cartTotal">0 CHF</span>
+            </div>
+        </div>
+
+        <div class="products-grid">
+            <!-- Latzschürze 19 -->
+            <div class="product-card" data-price="85">
+                <div class="product-image">
+                    <img src="https://images.pexels.com/photos/6205509/pexels-photo-6205509.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop" alt="Latzschürze" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Latzschürze Premium</h3>
+                    <p class="product-number">Art.-Nr.: LSZ-19</p>
+                    <p class="product-description">Hochwertige Latzschürze für professionelle Küchen</p>
+                    
+                    <div class="product-options">
+                        <div class="color-picker">
+                            <label>Farbe:</label>
+                            <div class="color-options">
+                                <input type="radio" id="color-lsz19-black" name="color-lsz19" value="Schwarz" checked>
+                                <label for="color-lsz19-black" class="color-option" style="background-color: #000000;" title="Schwarz"></label>
+                                
+                                <input type="radio" id="color-lsz19-white" name="color-lsz19" value="Weiß">
+                                <label for="color-lsz19-white" class="color-option" style="background-color: #ffffff; border: 1px solid #ccc;" title="Weiß"></label>
+                                
+                                <input type="radio" id="color-lsz19-blue" name="color-lsz19" value="Blau">
+                                <label for="color-lsz19-blue" class="color-option" style="background-color: #1e3a8a;" title="Blau"></label>
+                            </div>
+                        </div>
+                        
+                        <div class="quantity-picker">
+                            <label>Anzahl:</label>
+                            <div class="quantity-controls">
+                                <button type="button" class="qty-btn" onclick="changeQuantity('lsz19', -1)">-</button>
+                                <input type="number" id="qty-lsz19" value="0" min="0" max="50" readonly>
+                                <button type="button" class="qty-btn" onclick="changeQuantity('lsz19', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-price">
+                        <span class="price">85 CHF</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Herren Kochhose -->
+            <div class="product-card" data-price="120">
+                <div class="product-image">
+                    <img src="https://images.pexels.com/photos/6205510/pexels-photo-6205510.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop" alt="Kochhose" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Herren Kochhose</h3>
+                    <p class="product-number">Art.-Nr.: KH-03</p>
+                    <p class="product-description">Bequeme Kochhose für den professionellen Einsatz</p>
+                    
+                    <div class="product-options">
+                        <div class="color-picker">
+                            <label>Farbe:</label>
+                            <div class="color-options">
+                                <input type="radio" id="color-kh03-black" name="color-kh03" value="Schwarz" checked>
+                                <label for="color-kh03-black" class="color-option" style="background-color: #000000;" title="Schwarz"></label>
+                                
+                                <input type="radio" id="color-kh03-white" name="color-kh03" value="Weiß">
+                                <label for="color-kh03-white" class="color-option" style="background-color: #ffffff; border: 1px solid #ccc;" title="Weiß"></label>
+                                
+                                <input type="radio" id="color-kh03-gray" name="color-kh03" value="Grau">
+                                <label for="color-kh03-gray" class="color-option" style="background-color: #6b7280;" title="Grau"></label>
+                            </div>
+                        </div>
+                        
+                        <div class="quantity-picker">
+                            <label>Anzahl:</label>
+                            <div class="quantity-controls">
+                                <button type="button" class="qty-btn" onclick="changeQuantity('kh03', -1)">-</button>
+                                <input type="number" id="qty-kh03" value="0" min="0" max="50" readonly>
+                                <button type="button" class="qty-btn" onclick="changeQuantity('kh03', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-price">
+                        <span class="price">120 CHF</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Herren Kochjacke -->
+            <div class="product-card" data-price="150">
+                <div class="product-image">
+                    <img src="https://images.pexels.com/photos/6205511/pexels-photo-6205511.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop" alt="Kochjacke" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Herren Kochjacke Langarm</h3>
+                    <p class="product-number">Art.-Nr.: KJ-16</p>
+                    <p class="product-description">Professionelle Kochjacke mit langen Ärmeln</p>
+                    
+                    <div class="product-options">
+                        <div class="color-picker">
+                            <label>Farbe:</label>
+                            <div class="color-options">
+                                <input type="radio" id="color-kj16-white" name="color-kj16" value="Weiß" checked>
+                                <label for="color-kj16-white" class="color-option" style="background-color: #ffffff; border: 1px solid #ccc;" title="Weiß"></label>
+                                
+                                <input type="radio" id="color-kj16-black" name="color-kj16" value="Schwarz">
+                                <label for="color-kj16-black" class="color-option" style="background-color: #000000;" title="Schwarz"></label>
+                                
+                                <input type="radio" id="color-kj16-gray" name="color-kj16" value="Grau">
+                                <label for="color-kj16-gray" class="color-option" style="background-color: #6b7280;" title="Grau"></label>
+                            </div>
+                        </div>
+                        
+                        <div class="quantity-picker">
+                            <label>Anzahl:</label>
+                            <div class="quantity-controls">
+                                <button type="button" class="qty-btn" onclick="changeQuantity('kj16', -1)">-</button>
+                                <input type="number" id="qty-kj16" value="0" min="0" max="50" readonly>
+                                <button type="button" class="qty-btn" onclick="changeQuantity('kj16', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-price">
+                        <span class="price">150 CHF</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bandana -->
+            <div class="product-card" data-price="25">
+                <div class="product-image">
+                    <img src="https://images.pexels.com/photos/6205512/pexels-photo-6205512.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop" alt="Bandana" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Bandana</h3>
+                    <p class="product-number">Art.-Nr.: BND-01</p>
+                    <p class="product-description">Praktisches Bandana für die Küche</p>
+                    
+                    <div class="product-options">
+                        <div class="color-picker">
+                            <label>Farbe:</label>
+                            <div class="color-options">
+                                <input type="radio" id="color-bnd01-black" name="color-bnd01" value="Schwarz" checked>
+                                <label for="color-bnd01-black" class="color-option" style="background-color: #000000;" title="Schwarz"></label>
+                                
+                                <input type="radio" id="color-bnd01-white" name="color-bnd01" value="Weiß">
+                                <label for="color-bnd01-white" class="color-option" style="background-color: #ffffff; border: 1px solid #ccc;" title="Weiß"></label>
+                                
+                                <input type="radio" id="color-bnd01-red" name="color-bnd01" value="Rot">
+                                <label for="color-bnd01-red" class="color-option" style="background-color: #dc2626;" title="Rot"></label>
+                            </div>
+                        </div>
+                        
+                        <div class="quantity-picker">
+                            <label>Anzahl:</label>
+                            <div class="quantity-controls">
+                                <button type="button" class="qty-btn" onclick="changeQuantity('bnd01', -1)">-</button>
+                                <input type="number" id="qty-bnd01" value="0" min="0" max="50" readonly>
+                                <button type="button" class="qty-btn" onclick="changeQuantity('bnd01', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-price">
+                        <span class="price">25 CHF</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Latzschürze 18 -->
+            <div class="product-card" data-price="75">
+                <div class="product-image">
+                    <img src="https://images.pexels.com/photos/6205513/pexels-photo-6205513.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop" alt="Latzschürze Classic" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Latzschürze Classic</h3>
+                    <p class="product-number">Art.-Nr.: LSZ-18</p>
+                    <p class="product-description">Klassische Latzschürze für den täglichen Gebrauch</p>
+                    
+                    <div class="product-options">
+                        <div class="color-picker">
+                            <label>Farbe:</label>
+                            <div class="color-options">
+                                <input type="radio" id="color-lsz18-black" name="color-lsz18" value="Schwarz" checked>
+                                <label for="color-lsz18-black" class="color-option" style="background-color: #000000;" title="Schwarz"></label>
+                                
+                                <input type="radio" id="color-lsz18-brown" name="color-lsz18" value="Braun">
+                                <label for="color-lsz18-brown" class="color-option" style="background-color: #92400e;" title="Braun"></label>
+                                
+                                <input type="radio" id="color-lsz18-green" name="color-lsz18" value="Grün">
+                                <label for="color-lsz18-green" class="color-option" style="background-color: #166534;" title="Grün"></label>
+                            </div>
+                        </div>
+                        
+                        <div class="quantity-picker">
+                            <label>Anzahl:</label>
+                            <div class="quantity-controls">
+                                <button type="button" class="qty-btn" onclick="changeQuantity('lsz18', -1)">-</button>
+                                <input type="number" id="qty-lsz18" value="0" min="0" max="50" readonly>
+                                <button type="button" class="qty-btn" onclick="changeQuantity('lsz18', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-price">
+                        <span class="price">75 CHF</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="order-actions">
+            <button class="btn" onclick="goToDashboard()">Zurück zum Dashboard</button>
+            <button class="btn" onclick="addToCart()" id="addToCartBtn" disabled>In den Warenkorb</button>
+            <button class="btn" onclick="placeOrder()" id="placeOrderBtn" disabled>Bestellung aufgeben</button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
