@@ -4,6 +4,49 @@ const validUser = {
     password: 'Filet'
 };
 
+// Default user data
+const defaultUserData = {
+    name: 'Peter Müller',
+    company: 'Zum Löwen',
+    address: 'Dorfstrasse 1, 8274 Tägerwilen',
+    email: 'chefkoch@zumloewen.ch'
+};
+
+// Load user data from localStorage or use defaults
+function loadUserData() {
+    const savedData = localStorage.getItem('userData');
+    return savedData ? JSON.parse(savedData) : { ...defaultUserData };
+}
+
+// Save user data to localStorage
+function saveUserData(userData) {
+    localStorage.setItem('userData', JSON.stringify(userData));
+}
+
+// Populate form fields with saved data
+function populateAccountForm() {
+    const userData = loadUserData();
+    const nameField = document.getElementById('name');
+    const companyField = document.getElementById('company');
+    const addressField = document.getElementById('address');
+    const usernameField = document.getElementById('username');
+    
+    if (nameField) nameField.value = userData.name;
+    if (companyField) companyField.value = userData.company;
+    if (addressField) addressField.value = userData.address;
+    if (usernameField) usernameField.value = userData.email;
+}
+
+// Update welcome message with current user name
+function updateWelcomeMessage() {
+    const userData = loadUserData();
+    const welcomeElement = document.querySelector('.welcome-section h1');
+    if (welcomeElement) {
+        const firstName = userData.name.split(' ')[0];
+        welcomeElement.textContent = `Willkommen zurück, ${firstName}`;
+    }
+}
+
 // Toast notification function
 function showToast(message, type = 'info') {
     const toast = document.createElement('div');
@@ -32,6 +75,16 @@ function checkAuth() {
 document.addEventListener('DOMContentLoaded', function() {
     // Check authentication on page load
     checkAuth();
+    
+    // Load user data for account page
+    if (window.location.pathname.includes('account.html')) {
+        populateAccountForm();
+    }
+    
+    // Update welcome message on dashboard
+    if (window.location.pathname.includes('dashboard.html')) {
+        updateWelcomeMessage();
+    }
     
     // Add welcome message on dashboard
     if (window.location.pathname.includes('dashboard.html') || window.location.pathname === '/') {
@@ -120,6 +173,18 @@ document.addEventListener('DOMContentLoaded', function() {
     if (accountForm) {
         accountForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // Get form data
+            const userData = {
+                name: document.getElementById('name').value,
+                company: document.getElementById('company').value,
+                address: document.getElementById('address').value,
+                email: document.getElementById('username').value
+            };
+            
+            // Save to localStorage
+            saveUserData(userData);
+            
             showToast('Persönliche Informationen wurden gespeichert!', 'success');
         });
     }
