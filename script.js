@@ -1,6 +1,6 @@
 // User credentials
 const validUser = {
-    username: 'Chefkoch',
+    username: 'chefkochzumloewen.ch',
     password: 'Filet'
 };
 
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const isFirstLogin = !localStorage.getItem('hasLoggedInBefore');
         if (isFirstLogin) {
             setTimeout(() => {
-                showToast('Welcome to your Kundenportal, Peter!', 'success');
+                showToast('Willkommen in Ihrem Kundenportal, Peter!', 'success');
                 localStorage.setItem('hasLoggedInBefore', 'true');
             }, 500);
         }
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 if (username === validUser.username && password === validUser.password) {
                     localStorage.setItem('authenticated', 'true');
-                    showToast('Login successful! Redirecting...', 'success');
+                    showToast('Anmeldung erfolgreich! Weiterleitung...', 'success');
                     setTimeout(() => {
                         window.location.href = 'dashboard.html';
                     }, 1000);
@@ -90,12 +90,79 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+    
+    // Forgot password form handler
+    const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+    if (forgotPasswordForm) {
+        forgotPasswordForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = forgotPasswordForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.innerHTML = originalText + '<span class="loading"></span>';
+            submitBtn.disabled = true;
+            
+            const email = document.getElementById('email').value;
+            
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                showToast('Wiederherstellungslink wurde an ' + email + ' gesendet!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            }, 1500);
+        });
+    }
+    
+    // Account form handler
+    const accountForm = document.getElementById('accountForm');
+    if (accountForm) {
+        accountForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            showToast('Persönliche Informationen wurden gespeichert!', 'success');
+        });
+    }
+    
+    // Change password form handler
+    const changePasswordForm = document.getElementById('changePasswordForm');
+    if (changePasswordForm) {
+        changePasswordForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (currentPassword !== validUser.password) {
+                showToast('Aktuelles Passwort ist falsch!', 'error');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                showToast('Neue Passwörter stimmen nicht überein!', 'error');
+                return;
+            }
+            
+            if (newPassword.length < 4) {
+                showToast('Neues Passwort muss mindestens 4 Zeichen lang sein!', 'error');
+                return;
+            }
+            
+            // Update password (in real app, this would be sent to server)
+            validUser.password = newPassword;
+            showToast('Passwort wurde erfolgreich geändert!', 'success');
+            setTimeout(() => {
+                window.location.href = 'account.html';
+            }, 1500);
+        });
+    }
 });
 
 // Navigation functions
 function goToLogin() {
     localStorage.removeItem('authenticated');
-    showToast('Logged out successfully', 'info');
+    showToast('Erfolgreich abgemeldet', 'info');
     window.location.href = 'index.html';
 }
 
@@ -118,37 +185,38 @@ function goToAccount() {
 function logout() {
     localStorage.removeItem('authenticated');
     localStorage.removeItem('hasLoggedInBefore');
-    showToast('You have been logged out', 'info');
+    showToast('Sie wurden abgemeldet', 'info');
     window.location.href = 'index.html';
 }
 
 // Dashboard functions
 function newOrder() {
-    showToast('Redirecting to order catalog...', 'info');
+    showToast('Weiterleitung zum Bestellkatalog...', 'info');
     setTimeout(() => {
-        alert('New Order functionality - This would redirect to the order catalog page.');
+        alert('Neue Bestellung - Dies würde zur Bestellkatalog-Seite weiterleiten.');
     }, 1000);
 }
 
 function showDetails(orderNumber) {
-    showToast('Loading order details...', 'info');
+    showToast('Bestelldetails werden geladen...', 'info');
     setTimeout(() => {
-        alert('Show details for order: ' + orderNumber + '\n\nThis would open a detailed view of the order.');
+        alert('Details für Bestellung: ' + orderNumber + '\n\nDies würde eine detaillierte Ansicht der Bestellung öffnen.');
     }, 800);
 }
 
 function orderAgain(orderNumber) {
-    showToast('Adding items to cart...', 'info');
+    showToast('Artikel werden zum Warenkorb hinzugefügt...', 'info');
     setTimeout(() => {
-        alert('Order again: ' + orderNumber + '\n\nThis would add the same items to cart for a new order.');
+        alert('Erneut bestellen: ' + orderNumber + '\n\nDies würde die gleichen Artikel für eine neue Bestellung zum Warenkorb hinzufügen.');
     }, 800);
 }
 
 function changePassword() {
-    showToast('Opening password change form...', 'info');
-    setTimeout(() => {
-        alert('Change Password functionality - This would open a password change form.');
-    }, 800);
+    if (localStorage.getItem('authenticated') === 'true') {
+        window.location.href = 'change-password.html';
+    } else {
+        window.location.href = 'index.html';
+    }
 }
 
 // Table sorting function
@@ -156,7 +224,7 @@ function sortTable(columnIndex) {
     const table = document.getElementById('ordersTable');
     if (!table) return;
     
-    showToast('Sorting table...', 'info');
+    showToast('Tabelle wird sortiert...', 'info');
     
     const tbody = table.getElementsByTagName('tbody')[0];
     const rows = Array.from(tbody.rows);

@@ -161,6 +161,31 @@ body {
     box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
+.form-group input[readonly] {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+.form-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+.account-form .form-group {
+    margin-bottom: 20px;
+}
+
+.change-password-form {
+    max-width: 400px;
+}
+
+.change-password-form .form-group {
+    margin-bottom: 20px;
+}
+
 .forgot-password {
     margin-top: 20px;
 }
@@ -488,6 +513,17 @@ body {
     transform: translateX(0);
 }
 
+.toast.success {
+    background: #28a745;
+}
+
+.toast.error {
+    background: #dc3545;
+}
+
+.toast.info {
+    background: #17a2b8;
+}
 /* Responsive Design */
 @media (max-width: 768px) {
     .dashboard-header {
