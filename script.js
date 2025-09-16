@@ -4,6 +4,9 @@ const validUser = {
     password: 'Filet'
 };
 
+// Debug logging for published version
+console.log('Script loaded successfully');
+
 // Default user data
 const defaultUserData = {
     name: 'Peter Müller',
@@ -215,6 +218,8 @@ function checkAuth() {
     const isAuthenticated = localStorage.getItem('authenticated') === 'true';
     const currentPage = window.location.pathname.split('/').pop();
     
+    console.log('Checking auth:', { isAuthenticated, currentPage });
+    
     if (!isAuthenticated && currentPage !== 'index.html' && currentPage !== 'error.html' && currentPage !== '') {
         window.location.href = 'index.html';
     }
@@ -222,6 +227,8 @@ function checkAuth() {
 
 // Login form handler
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Content Loaded');
+    
     // Check authentication on page load
     checkAuth();
     
@@ -280,8 +287,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
+        console.log('Login form found');
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            console.log('Login form submitted');
             
             // Add loading state
             const submitBtn = loginForm.querySelector('button[type="submit"]');
@@ -292,21 +301,27 @@ document.addEventListener('DOMContentLoaded', function() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
+            console.log('Login attempt:', { username, password });
+            
             // Simulate loading time
             setTimeout(() => {
                 if (username === validUser.username && password === validUser.password) {
+                    console.log('Login successful');
                     localStorage.setItem('authenticated', 'true');
                     showToast('Anmeldung erfolgreich! Weiterleitung...', 'success');
                     setTimeout(() => {
                         window.location.href = 'dashboard.html';
                     }, 1000);
                 } else {
+                    console.log('Login failed');
                     submitBtn.innerHTML = originalText;
                     submitBtn.disabled = false;
                     window.location.href = 'error.html';
                 }
             }, 1500);
         });
+    } else {
+        console.log('Login form not found');
         
         // Add input validation feedback
         const inputs = loginForm.querySelectorAll('input');
