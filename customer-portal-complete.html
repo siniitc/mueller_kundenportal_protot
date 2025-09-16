@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Müller Manufaktur - Kundenportal</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            background-color: #ffffff;
+            color: #000;
+            line-height: 1.4;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            padding-top: 80px;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 12px 20px;
+            border-bottom: 1px solid #ddd;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            height: 48px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        /* Button Styles */
+        .btn {
+            line-height: 1;
+            padding: 0.25em 0.9em !important;
+            font-weight: 600;
+            border-radius: 0;
+            background-color: transparent !important;
+            color: #000;
+            border: 1px solid #000;
+            display: inline-block;
+            cursor: pointer;
+            text-decoration: none;
+            font-family: inherit;
+            font-size: 0.9em;
+            margin: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #000 !important;
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Login Page */
+        .login-container {
+            max-width: 320px;
+            margin: 40px auto;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(10px);
+        }
+
+        .login-container h1 {
+            margin-bottom: 8px;
+            font-size: 2em;
+            background: linear-gradient(135deg, #000 0%, #333 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-container h2 {
+            margin-bottom: 24px;
+            font-weight: 400;
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            font-size: 0.9em;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #000;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Dashboard */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .welcome-section h1 {
+            font-size: 2em;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #000 0%, #333 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .budget-info {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 16px;
+            border: 1px solid #000;
+            min-width: 200px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .budget-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .budget-value.remaining {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 90px;
+            right: 16px;
+            background: #000;
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 6px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transform: translateX(320px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            font-size: 0.9em;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background: #28a745;
+        }
+
+        .toast.error {
+            background: #dc3545;
+        }
+
+        /* Hidden sections */
+        .hidden {
+            display: none;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            border-top-color: #000;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+                font-size: 13px;
+            }
+            
+            .header {
+                padding: 10px 16px;
+            }
+            
+            .logo {
+                height: 40px;
+            }
+            
+            .main-content {
+                padding: 16px 12px;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .login-container {
+                margin: 20px auto;
+                padding: 24px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <img src="https://www.mueller-manufaktur.com/site/assets/files/1070/logo-mueller-manufaktur-big.png" alt="Müller Manufaktur Logo" class="logo">
+        <div id="accountIcon" class="hidden" style="cursor: pointer; padding: 8px; font-size: 20px;" onclick="showAccount()">👤</div>
+    </header>
+
+    <main class="main-content">
+        <!-- Login Section -->
+        <div id="loginSection" class="login-container">
+            <h1>Kundenportal</h1>
+            <h2>Anmeldung</h2>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">E-Mail-Adresse:</label>
+                    <input type="text" id="username" name="username" required placeholder="chefkoch@zumloewen.ch">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Passwort:</label>
+                    <input type="password" id="password" name="password" required placeholder="Filet">
+                </div>
+                
+                <button type="submit" class="btn">Anmelden</button>
+            </form>
+            
+            <!-- Debug info -->
+            <div style="margin-top: 20px; padding: 10px; background: #f0f0f0; font-size: 12px; border-radius: 4px;">
+                <strong>Test Credentials:</strong><br>
+                Email: chefkoch@zumloewen.ch<br>
+                Password: Filet
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboardSection" class="hidden">
+            <div class="dashboard-header">
+                <div class="welcome-section">
+                    <h1>Willkommen zurück, Peter</h1>
+                </div>
+                <div class="budget-section">
+                    <div class="budget-info">
+                        <div class="budget-item">
+                            <span class="budget-label">Jahresbudget:</span>
+                            <span class="budget-value">5000 CHF</span>
+                        </div>
+                        <div class="budget-item">
+                            <span class="budget-label">Verbleibendes Budget:</span>
+                            <span class="budget-value remaining">3000 CHF</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-bottom: 32px; padding: 24px; background: rgba(255, 255, 255, 0.5); border-radius: 8px; border: 1px dashed #ddd;">
+                <h3>Bereit für eine neue Bestellung?</h3>
+                <p>Durchsuchen Sie ihr Sortiment und bestellen Sie Materialien innerhalb Ihres Budgets</p>
+                <button class="btn" onclick="showToast('Bestellfunktion wird geladen...', 'info')">Neue Bestellung</button>
+            </div>
+
+            <div style="margin-bottom: 32px;">
+                <h2 style="margin-bottom: 16px; font-size: 1.5em; color: #333;">Übersicht der letzten Bestellungen</h2>
+                <div style="overflow-x: auto; background: rgba(255, 255, 255, 0.9); border-radius: 8px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);">
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 0.9em;">
+                        <thead>
+                            <tr>
+                                <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); font-weight: 600;">Datum</th>
+                                <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); font-weight: 600;">Bestellnummer</th>
+                                <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); font-weight: 600;">Status</th>
+                                <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); font-weight: 600;">Betrag</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="transition: all 0.3s ease;">
+                                <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">15.01.2025</td>
+                                <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">ORD-2025-001</td>
+                                <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;"><span style="padding: 3px 6px; border-radius: 3px; font-size: 0.8em; font-weight: 500; text-transform: uppercase; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;">abgeschlossen</span></td>
+                                <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">1000 CHF</td>
+                            </tr>
+                            <tr style="transition: all 0.3s ease;">
+                                <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">28.02.2025</td>
+                                <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">ORD-2025-002</td>
+                                <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;"><span style="padding: 3px 6px; border-radius: 3px; font-size: 0.8em; font-weight: 500; text-transform: uppercase; background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7;">in Bearbeitung</span></td>
+                                <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">1000 CHF</td>
+                            </tr>
+                            <tr style="transition: all 0.3s ease;">
+                                <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">15.05.2025</td>
+                                <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">ORD-2025-003</td>
+                                <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;"><span style="padding: 3px 6px; border-radius: 3px; font-size: 0.8em; font-weight: 500; text-transform: uppercase; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;">abgeschlossen</span></td>
+                                <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">1000 CHF</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px; border-top: 1px solid #eee; padding-top: 24px;">
+                <button class="btn" onclick="logout()" style="border-color: #dc3545; color: #dc3545;">Abmelden</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // User credentials
+        const validUser = {
+            username: 'chefkoch@zumloewen.ch',
+            password: 'Filet'
+        };
+
+        // Toast notification function
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
+        }
+
+        // Check authentication
+        function checkAuth() {
+            const isAuthenticated = localStorage.getItem('authenticated') === 'true';
+            if (isAuthenticated) {
+                showDashboard();
+            } else {
+                showLogin();
+            }
+        }
+
+        // Show login section
+        function showLogin() {
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('dashboardSection').classList.add('hidden');
+            document.getElementById('accountIcon').classList.add('hidden');
+        }
+
+        // Show dashboard section
+        function showDashboard() {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('dashboardSection').classList.remove('hidden');
+            document.getElementById('accountIcon').classList.remove('hidden');
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('authenticated');
+            showToast('Sie wurden abgemeldet', 'info');
+            showLogin();
+        }
+
+        // Show account (placeholder)
+        function showAccount() {
+            showToast('Kontoverwaltung wird geladen...', 'info');
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Customer Portal loaded');
+            
+            // Check authentication
+            checkAuth();
+            
+            // Login form handler
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const submitBtn = loginForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.innerHTML = originalText + '<span class="loading"></span>';
+                    submitBtn.disabled = true;
+                    
+                    const username = document.getElementById('username').value;
+                    const password = document.getElementById('password').value;
+                    
+                    console.log('Login attempt:', { username, password });
+                    
+                    // Simulate loading time
+                    setTimeout(() => {
+                        if (username === validUser.username && password === validUser.password) {
+                            console.log('Login successful');
+                            localStorage.setItem('authenticated', 'true');
+                            showToast('Anmeldung erfolgreich!', 'success');
+                            setTimeout(() => {
+                                showDashboard();
+                            }, 1000);
+                        } else {
+                            console.log('Login failed');
+                            submitBtn.innerHTML = originalText;
+                            submitBtn.disabled = false;
+                            showToast('Benutzername oder Passwort falsch!', 'error');
+                        }
+                    }, 1500);
+                });
+            }
+
+            // Add welcome message on first login
+            const isFirstLogin = !localStorage.getItem('hasLoggedInBefore');
+            if (localStorage.getItem('authenticated') === 'true' && isFirstLogin) {
+                setTimeout(() => {
+                    showToast('Willkommen in Ihrem Kundenportal, Peter!', 'success');
+                    localStorage.setItem('hasLoggedInBefore', 'true');
+                }, 500);
+            }
+        });
+    </script>
+</body>
+</html>
