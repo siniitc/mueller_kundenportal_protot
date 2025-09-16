@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Portal - My Account</title>
+    <title>Kundenportal - My Account</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <img src="https://www.mueller-manufaktur.com/site/assets/files/1070/logo-mueller-manufaktur-big.png" alt="Müller Manufaktur Logo" class="logo">
+    </header>
+
+    <main class="main-content">
+        <div class="account-header">
+            <h1>Manage My Account</h1>
+        </div>
+
+        <div class="account-info">
+            <div class="info-section">
+                <h2>Personal Information</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label>Name:</label>
+                        <span>Peter Müller</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Company:</label>
+                        <span>Zum Löwen</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Address:</label>
+                        <span>Dorfstrasse 1, 8274 Tägerwilen</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Username:</label>
+                        <span>Chefkoch</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="budget-section-account">
+                <h2>Budget Information</h2>
+                <div class="budget-grid">
+                    <div class="budget-item-account">
+                        <label>Annual Budget:</label>
+                        <span>5000 CHF</span>
+                    </div>
+                    <div class="budget-item-account">
+                        <label>Used Budget:</label>
+                        <span>2000 CHF</span>
+                    </div>
+                    <div class="budget-item-account">
+                        <label>Remaining Budget:</label>
+                        <span class="remaining-budget">3000 CHF</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="account-actions">
+            <button class="btn" onclick="changePassword()">Change Password</button>
+            <button class="btn" onclick="goToDashboard()">Back to Dashboard</button>
+        </div>
+
+        <div class="logout-section">
+            <button class="btn logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

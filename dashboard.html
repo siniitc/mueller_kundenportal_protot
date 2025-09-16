@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Portal - Dashboard</title>
+    <title>Kundenportal - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <img src="https://www.mueller-manufaktur.com/site/assets/files/1070/logo-mueller-manufaktur-big.png" alt="Müller Manufaktur Logo" class="logo">
+    </header>
+
+    <main class="main-content">
+        <div class="dashboard-header">
+            <div class="welcome-section">
+                <h1>Welcome back, Peter</h1>
+            </div>
+            <div class="budget-section">
+                <div class="budget-info">
+                    <div class="budget-item">
+                        <span class="budget-label">Annual Budget:</span>
+                        <span class="budget-value">5000 CHF</span>
+                    </div>
+                    <div class="budget-item">
+                        <span class="budget-label">Remaining Budget:</span>
+                        <span class="budget-value remaining">3000 CHF</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn" onclick="newOrder()">New Order</button>
+            <button class="btn" onclick="goToAccount()">My Account</button>
+        </div>
+
+        <div class="orders-section">
+            <h2>Overview of recent orders</h2>
+            <div class="table-container">
+                <table class="orders-table" id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th class="sortable" onclick="sortTable(0)" title="Click to sort by date">Date</th>
+                            <th>Order Number</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>15.01.2025</td>
+                            <td>ORD-2025-001</td>
+                            <td><span class="status completed">completed</span></td>
+                            <td>1000 CHF</td>
+                            <td class="actions">
+                                <button class="btn-small" onclick="showDetails('ORD-2025-001')">Details</button>
+                                <button class="btn-small" onclick="orderAgain('ORD-2025-001')">Order Again</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>28.02.2025</td>
+                            <td>ORD-2025-002</td>
+                            <td><span class="status in-progress">in progress</span></td>
+                            <td>1000 CHF</td>
+                            <td class="actions">
+                                <button class="btn-small" onclick="showDetails('ORD-2025-002')">Details</button>
+                                <button class="btn-small" onclick="orderAgain('ORD-2025-002')">Order Again</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>15.05.2025</td>
+                            <td>ORD-2025-003</td>
+                            <td><span class="status completed">completed</span></td>
+                            <td>1000 CHF</td>
+                            <td class="actions">
+                                <button class="btn-small" onclick="showDetails('ORD-2025-003')">Details</button>
+                                <button class="btn-small" onclick="orderAgain('ORD-2025-003')">Order Again</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="new-order-section">
+            <h3>Ready to place a new order?</h3>
+            <p>Browse our catalog and order materials within your budget</p>
+            <button class="btn" onclick="newOrder()">New Order</button>
+        </div>
+
+        <div class="logout-section">
+            <button class="btn logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
