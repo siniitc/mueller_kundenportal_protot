@@ -34,10 +34,6 @@ body {
 }
 
 .account-icon {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
     cursor: pointer;
     padding: 8px;
     border-radius: 50%;
@@ -51,14 +47,13 @@ body {
 
 .account-icon:hover {
     background-color: rgba(0, 0, 0, 0.05);
-    transform: translateY(-50%) scale(1.1);
+    transform: scale(1.1);
 }
 
 .logo {
     height: 48px;
     width: auto;
     transition: transform 0.3s ease;
-    margin: 0 auto;
 }
 
 .logo:hover {
@@ -340,7 +335,6 @@ body {
 
 @media (max-width: 768px) {
     .account-icon {
-        left: 12px;
         font-size: 18px;
     }
 }
