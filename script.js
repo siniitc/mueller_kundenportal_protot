@@ -1,6 +1,6 @@
 // User credentials
 const validUser = {
-    username: 'chefkochzumloewen.ch',
+    username: 'chefkoch@zumloewen.ch',
     password: 'Filet'
 };
 
