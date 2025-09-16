@@ -791,6 +791,70 @@ body {
     transform: none;
     box-shadow: none;
 }
+
+/* Order Summary */
+.order-summary-section {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #000;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.order-summary-section h3 {
+    margin-bottom: 12px;
+    font-size: 1.1em;
+    color: #000;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 6px;
+}
+
+.summary-items {
+    margin-bottom: 12px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.85em;
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+}
+
+.summary-item-info {
+    flex: 1;
+}
+
+.summary-item-name {
+    font-weight: 500;
+    color: #000;
+}
+
+.summary-item-details {
+    color: #666;
+    font-size: 0.9em;
+    margin-top: 2px;
+}
+
+.summary-item-price {
+    font-weight: 600;
+    color: #000;
+    min-width: 60px;
+    text-align: right;
+}
+
+.summary-total {
+    text-align: right;
+    padding-top: 8px;
+    border-top: 1px solid #000;
+    font-size: 0.9em;
+}
 /* Responsive Design */
 @media (max-width: 768px) {
     body {

@@ -251,6 +251,14 @@
         </div>
 
         <div class="order-actions">
+            <div id="orderSummary" class="order-summary-section" style="display: none;">
+                <h3>Bestellübersicht</h3>
+                <div id="summaryItems" class="summary-items"></div>
+                <div class="summary-total">
+                    <strong>Gesamtsumme: <span id="summaryTotal">0 CHF</span></strong>
+                </div>
+            </div>
+
             <button class="btn" onclick="goToDashboard()">Zurück zum Dashboard</button>
             <button class="btn" onclick="addToCart()" id="addToCartBtn" disabled>In den Warenkorb</button>
             <button class="btn" onclick="placeOrder()" id="placeOrderBtn" disabled>Bestellung aufgeben</button>

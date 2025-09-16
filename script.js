@@ -372,6 +372,7 @@ function updateCartTotal() {
 function updateOrderButtons() {
     const addToCartBtn = document.getElementById('addToCartBtn');
     const placeOrderBtn = document.getElementById('placeOrderBtn');
+    const orderSummary = document.getElementById('orderSummary');
     
     let hasItems = false;
     const productCards = document.querySelectorAll('.product-card');
@@ -386,6 +387,54 @@ function updateOrderButtons() {
     
     if (addToCartBtn) addToCartBtn.disabled = !hasItems;
     if (placeOrderBtn) placeOrderBtn.disabled = !hasItems;
+    
+    // Show/hide order summary
+    if (orderSummary) {
+        if (hasItems) {
+            orderSummary.style.display = 'block';
+            updateOrderSummary();
+        } else {
+            orderSummary.style.display = 'none';
+        }
+    }
+}
+
+function updateOrderSummary() {
+    const summaryItems = document.getElementById('summaryItems');
+    const summaryTotal = document.getElementById('summaryTotal');
+    
+    if (!summaryItems || !summaryTotal) return;
+    
+    let totalAmount = 0;
+    let summaryHTML = '';
+    const productCards = document.querySelectorAll('.product-card');
+    
+    productCards.forEach(card => {
+        const productId = card.querySelector('.quantity-controls input').id.replace('qty-', '');
+        const quantity = parseInt(document.getElementById('qty-' + productId).value);
+        
+        if (quantity > 0) {
+            const title = card.querySelector('.product-title').textContent;
+            const price = parseInt(card.dataset.price);
+            const color = card.querySelector('input[name="color-' + productId + '"]:checked').value;
+            const itemTotal = price * quantity;
+            
+            totalAmount += itemTotal;
+            
+            summaryHTML += `
+                <div class="summary-item">
+                    <div class="summary-item-info">
+                        <div class="summary-item-name">${title}</div>
+                        <div class="summary-item-details">${quantity}x ${price} CHF • Farbe: ${color}</div>
+                    </div>
+                    <div class="summary-item-price">${itemTotal} CHF</div>
+                </div>
+            `;
+        }
+    });
+    
+    summaryItems.innerHTML = summaryHTML;
+    summaryTotal.textContent = totalAmount + ' CHF';
 }
 
 function addToCart() {
