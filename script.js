@@ -12,6 +12,9 @@ const defaultUserData = {
     email: 'chefkoch@zumloewen.ch'
 };
 
+// Cart storage
+let currentCart = [];
+
 // Load user data from localStorage or use defaults
 function loadUserData() {
     const savedData = localStorage.getItem('userData');
@@ -89,7 +92,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize new order page
     if (window.location.pathname.includes('new-order.html')) {
         updateCartTotal();
-        updateOrderButtons();
+        updateBasketIcon();
+    }
+    
+    // Initialize order overview page
+    if (window.location.pathname.includes('order-overview.html')) {
+        loadOrderOverview();
+    }
+    
+    // Update basket icon on all pages
+    const savedCart = localStorage.getItem('currentCart');
+    if (savedCart) {
+        currentCart = JSON.parse(savedCart);
+        updateBasketIcon();
+    }
+    
+    // Initialize order overview page
+    if (window.location.pathname.includes('order-overview.html')) {
+        loadOrderOverview();
     }
     
     // Add welcome message on dashboard
@@ -345,13 +365,35 @@ function changeQuantity(productId, change) {
 
 function updateCartTotal() {
     let total = 0;
+    let itemCount = 0;
+    currentCart = [];
     const productCards = document.querySelectorAll('.product-card');
     
     productCards.forEach(card => {
         const price = parseInt(card.dataset.price);
         const productId = card.querySelector('.quantity-controls input').id.replace('qty-', '');
         const quantity = parseInt(document.getElementById('qty-' + productId).value);
-        total += price * quantity;
+        
+        if (quantity > 0) {
+            const title = card.querySelector('.product-title').textContent;
+            const color = card.querySelector('input[name="color-' + productId + '"]:checked').value;
+            const productNumber = card.querySelector('.product-number').textContent;
+            const imageSrc = card.querySelector('.product-img').src;
+            
+            currentCart.push({
+                id: productId,
+                title: title,
+                productNumber: productNumber,
+                quantity: quantity,
+                price: price,
+                color: color,
+                total: price * quantity,
+                imageSrc: imageSrc
+            });
+            
+            total += price * quantity;
+            itemCount += quantity;
+        }
     });
     
     const totalElement = document.getElementById('cartTotal');
@@ -367,136 +409,105 @@ function updateCartTotal() {
             totalElement.style.color = '#000';
         }
     }
+    
+    updateBasketIcon();
 }
 
-function updateOrderButtons() {
-    const addToCartBtn = document.getElementById('addToCartBtn');
-    const placeOrderBtn = document.getElementById('placeOrderBtn');
-    const orderSummary = document.getElementById('orderSummary');
-    
-    let hasItems = false;
-    const productCards = document.querySelectorAll('.product-card');
-    
-    productCards.forEach(card => {
-        const productId = card.querySelector('.quantity-controls input').id.replace('qty-', '');
-        const quantity = parseInt(document.getElementById('qty-' + productId).value);
-        if (quantity > 0) {
-            hasItems = true;
-        }
-    });
-    
-    if (addToCartBtn) addToCartBtn.disabled = !hasItems;
-    if (placeOrderBtn) placeOrderBtn.disabled = !hasItems;
-    
-    // Show/hide order summary
-    if (orderSummary) {
-        if (hasItems) {
-            orderSummary.style.display = 'block';
-            updateOrderSummary();
-        } else {
-            orderSummary.style.display = 'none';
-        }
+function updateBasketIcon() {
+    const basketCount = document.getElementById('basketCount');
+    if (basketCount) {
+        const totalItems = currentCart.reduce((sum, item) => sum + item.quantity, 0);
+        basketCount.textContent = totalItems;
+        basketCount.classList.toggle('hidden', totalItems === 0);
     }
 }
 
-function updateOrderSummary() {
-    const summaryItems = document.getElementById('summaryItems');
-    const summaryTotal = document.getElementById('summaryTotal');
+function showOrderOverview() {
+    if (localStorage.getItem('authenticated') === 'true') {
+        // Save current cart to localStorage
+        localStorage.setItem('currentCart', JSON.stringify(currentCart));
+        window.location.href = 'order-overview.html';
+    } else {
+        window.location.href = 'index.html';
+    }
+}
+
+function loadOrderOverview() {
+    const savedCart = localStorage.getItem('currentCart');
+    const cart = savedCart ? JSON.parse(savedCart) : [];
     
-    if (!summaryItems || !summaryTotal) return;
+    const container = document.getElementById('orderItemsContainer');
+    const actions = document.getElementById('orderOverviewActions');
+    const totalElement = document.getElementById('overviewTotal');
+    
+    if (cart.length === 0) {
+        container.innerHTML = `
+            <div class="empty-order">
+                <p>Ihr Warenkorb ist leer</p>
+                <button class="btn" onclick="newOrder()">Artikel auswählen</button>
+            </div>
+        `;
+        actions.style.display = 'none';
+        if (totalElement) totalElement.textContent = '0 CHF';
+        return;
+    }
     
     let totalAmount = 0;
-    let summaryHTML = '';
-    const productCards = document.querySelectorAll('.product-card');
+    let itemsHTML = '';
     
-    productCards.forEach(card => {
-        const productId = card.querySelector('.quantity-controls input').id.replace('qty-', '');
-        const quantity = parseInt(document.getElementById('qty-' + productId).value);
-        
-        if (quantity > 0) {
-            const title = card.querySelector('.product-title').textContent;
-            const price = parseInt(card.dataset.price);
-            const color = card.querySelector('input[name="color-' + productId + '"]:checked').value;
-            const itemTotal = price * quantity;
-            
-            totalAmount += itemTotal;
-            
-            summaryHTML += `
-                <div class="summary-item">
-                    <div class="summary-item-info">
-                        <div class="summary-item-name">${title}</div>
-                        <div class="summary-item-details">${quantity}x ${price} CHF • Farbe: ${color}</div>
-                    </div>
-                    <div class="summary-item-price">${itemTotal} CHF</div>
+    cart.forEach(item => {
+        totalAmount += item.total;
+        itemsHTML += `
+            <div class="order-item">
+                <div class="order-item-image">
+                    <img src="${item.imageSrc}" alt="${item.title}" 
+                         onerror="this.src='https://images.pexels.com/photos/6205509/pexels-photo-6205509.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop'">
                 </div>
-            `;
-        }
+                <div class="order-item-info">
+                    <div class="order-item-name">${item.title}</div>
+                    <div class="order-item-details">${item.productNumber}</div>
+                    <div class="order-item-details">Farbe: ${item.color}</div>
+                    <div class="order-item-details">Menge: ${item.quantity}</div>
+                </div>
+                <div class="order-item-price">
+                    ${item.total} CHF
+                    <div class="order-item-unit-price">(${item.price} CHF/Stk.)</div>
+                </div>
+            </div>
+        `;
     });
     
-    summaryItems.innerHTML = summaryHTML;
-    summaryTotal.textContent = totalAmount + ' CHF';
-}
-
-function addToCart() {
-    const cartItems = [];
-    const productCards = document.querySelectorAll('.product-card');
+    itemsHTML += `
+        <div class="order-overview-total">
+            <span class="order-overview-total-label">Gesamtsumme: ${totalAmount} CHF</span>
+        </div>
+    `;
     
-    productCards.forEach(card => {
-        const productId = card.querySelector('.quantity-controls input').id.replace('qty-', '');
-        const quantity = parseInt(document.getElementById('qty-' + productId).value);
+    container.innerHTML = itemsHTML;
+    actions.style.display = 'flex';
+    if (totalElement) {
+        totalElement.textContent = totalAmount + ' CHF';
         
-        if (quantity > 0) {
-            const title = card.querySelector('.product-title').textContent;
-            const price = parseInt(card.dataset.price);
-            const color = card.querySelector('input[name="color-' + productId + '"]:checked').value;
-            
-            cartItems.push({
-                id: productId,
-                title: title,
-                quantity: quantity,
-                price: price,
-                color: color,
-                total: price * quantity
-            });
+        // Check budget
+        const availableBudget = 3000;
+        if (totalAmount > availableBudget) {
+            totalElement.style.color = '#dc3545';
+        } else {
+            totalElement.style.color = '#000';
         }
-    });
-    
-    if (cartItems.length > 0) {
-        showToast('Artikel wurden zum Warenkorb hinzugefügt!', 'success');
-        // In a real app, this would save to cart storage
-        console.log('Cart items:', cartItems);
     }
+    
+    // Update basket icon
+    updateBasketIcon();
 }
 
-function placeOrder() {
-    const cartItems = [];
-    let totalAmount = 0;
-    const productCards = document.querySelectorAll('.product-card');
+function confirmOrder() {
+    const savedCart = localStorage.getItem('currentCart');
+    const cart = savedCart ? JSON.parse(savedCart) : [];
     
-    productCards.forEach(card => {
-        const productId = card.querySelector('.quantity-controls input').id.replace('qty-', '');
-        const quantity = parseInt(document.getElementById('qty-' + productId).value);
+    if (cart.length > 0) {
+        const totalAmount = cart.reduce((sum, item) => sum + item.total, 0);
         
-        if (quantity > 0) {
-            const title = card.querySelector('.product-title').textContent;
-            const price = parseInt(card.dataset.price);
-            const color = card.querySelector('input[name="color-' + productId + '"]:checked').value;
-            const itemTotal = price * quantity;
-            
-            cartItems.push({
-                id: productId,
-                title: title,
-                quantity: quantity,
-                price: price,
-                color: color,
-                total: itemTotal
-            });
-            
-            totalAmount += itemTotal;
-        }
-    });
-    
-    if (cartItems.length > 0) {
         // Check budget
         const availableBudget = 3000;
         if (totalAmount > availableBudget) {
@@ -510,14 +521,8 @@ function placeOrder() {
         setTimeout(() => {
             showToast('Bestellung erfolgreich aufgegeben! Gesamtsumme: ' + totalAmount + ' CHF', 'success');
             
-            // Reset form
-            productCards.forEach(card => {
-                const productId = card.querySelector('.quantity-controls input').id.replace('qty-', '');
-                document.getElementById('qty-' + productId).value = 0;
-            });
-            
-            updateCartTotal();
-            updateOrderButtons();
+            // Clear cart
+            localStorage.removeItem('currentCart');
             
             // Redirect to dashboard after 2 seconds
             setTimeout(() => {

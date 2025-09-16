@@ -9,6 +9,10 @@
 <body>
     <header class="header">
         <img src="https://www.mueller-manufaktur.com/site/assets/files/1070/logo-mueller-manufaktur-big.png" alt="Müller Manufaktur Logo" class="logo">
+        <div class="basket-icon" onclick="showOrderOverview()">
+            <span class="basket-symbol">🛒</span>
+            <span class="basket-count" id="basketCount">0</span>
+        </div>
     </header>
 
     <main class="main-content">
@@ -251,17 +255,7 @@
         </div>
 
         <div class="order-actions">
-            <div id="orderSummary" class="order-summary-section" style="display: none;">
-                <h3>Bestellübersicht</h3>
-                <div id="summaryItems" class="summary-items"></div>
-                <div class="summary-total">
-                    <strong>Gesamtsumme: <span id="summaryTotal">0 CHF</span></strong>
-                </div>
-            </div>
-
             <button class="btn" onclick="goToDashboard()">Zurück zum Dashboard</button>
-            <button class="btn" onclick="addToCart()" id="addToCartBtn" disabled>In den Warenkorb</button>
-            <button class="btn" onclick="placeOrder()" id="placeOrderBtn" disabled>Bestellung aufgeben</button>
         </div>
     </main>
 

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kundenportal - Bestellübersicht</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <img src="https://www.mueller-manufaktur.com/site/assets/files/1070/logo-mueller-manufaktur-big.png" alt="Müller Manufaktur Logo" class="logo">
+        <div class="basket-icon" onclick="showOrderOverview()">
+            <span class="basket-symbol">🛒</span>
+            <span class="basket-count" id="basketCount">0</span>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="order-overview-header">
+            <h1>Bestellübersicht</h1>
+            <p>Überprüfen Sie Ihre Auswahl vor der finalen Bestellung</p>
+        </div>
+
+        <div class="budget-display-overview">
+            <div class="budget-item">
+                <span class="budget-label">Verfügbares Budget:</span>
+                <span class="budget-value">3000 CHF</span>
+            </div>
+            <div class="budget-item">
+                <span class="total-label">Bestellsumme:</span>
+                <span class="total-value" id="overviewTotal">0 CHF</span>
+            </div>
+        </div>
+
+        <div class="order-items-container" id="orderItemsContainer">
+            <div class="empty-order">
+                <p>Ihr Warenkorb ist leer</p>
+                <button class="btn" onclick="newOrder()">Artikel auswählen</button>
+            </div>
+        </div>
+
+        <div class="order-overview-actions" id="orderOverviewActions" style="display: none;">
+            <button class="btn" onclick="newOrder()">Weitere Artikel hinzufügen</button>
+            <button class="btn" onclick="confirmOrder()" id="confirmOrderBtn">Bestellung bestätigen</button>
+        </div>
+
+        <div class="back-actions">
+            <button class="btn" onclick="goToDashboard()">Zurück zum Dashboard</button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
