@@ -586,17 +586,12 @@ function removeItem(productId) {
 
 function updateOrderButtons() {
     const confirmBtn = document.getElementById('confirmOrderBtn');
-    const totalItems = currentCart.reduce((sum, item) => sum + item.quantity, 0);
     
     if (confirmBtn) {
-        confirmBtn.disabled = totalItems === 0;
-        if (totalItems === 0) {
-            confirmBtn.style.opacity = '0.5';
-            confirmBtn.style.cursor = 'not-allowed';
-        } else {
-            confirmBtn.style.opacity = '1';
-            confirmBtn.style.cursor = 'pointer';
-        }
+        // Always enable the button so users can repeat exact orders
+        confirmBtn.disabled = false;
+        confirmBtn.style.opacity = '1';
+        confirmBtn.style.cursor = 'pointer';
     }
 }
 
