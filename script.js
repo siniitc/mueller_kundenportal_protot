@@ -710,6 +710,9 @@ function loadOrderOverview() {
                     ${item.total} CHF
                     <div class="order-item-unit-price">(${item.price} CHF/Stk.)</div>
                 </div>
+                <div class="order-item-delete">
+                    <button type="button" class="delete-btn" onclick="removeFromOverview('${item.id}')" title="Artikel entfernen">🗑️</button>
+                </div>
             </div>
         `;
     });
@@ -736,6 +739,30 @@ function loadOrderOverview() {
     
     // Update basket icon
     updateBasketIcon();
+}
+
+function removeFromOverview(productId) {
+    const savedCart = localStorage.getItem('currentCart');
+    let cart = savedCart ? JSON.parse(savedCart) : [];
+    
+    // Remove the item from cart
+    cart = cart.filter(item => item.id !== productId);
+    
+    // Update localStorage
+    localStorage.setItem('currentCart', JSON.stringify(cart));
+    
+    // Reload the overview
+    loadOrderOverview();
+    
+    showToast('Artikel wurde entfernt', 'info');
+}
+
+function clearCart() {
+    if (confirm('Möchten Sie wirklich alle Artikel aus dem Warenkorb entfernen?')) {
+        localStorage.removeItem('currentCart');
+        loadOrderOverview();
+        showToast('Warenkorb wurde geleert', 'info');
+    }
 }
 
 function confirmOrder() {

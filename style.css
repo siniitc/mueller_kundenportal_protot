@@ -1098,6 +1098,18 @@ body {
     font-weight: normal;
 }
 
+.order-item-delete {
+    margin-left: 12px;
+    flex-shrink: 0;
+}
+
+.order-item-delete .delete-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 0.8em;
+    margin: 0;
+}
+
 .order-overview-total {
     text-align: right;
     padding-top: 12px;
