@@ -386,6 +386,11 @@ document.addEventListener('DOMContentLoaded', function() {
             saveUserData(userData);
             
             showToast('Persönliche Informationen wurden gespeichert!', 'success');
+            
+            // Redirect to dashboard after 1.5 seconds
+            setTimeout(() => {
+                goToDashboard();
+            }, 1500);
         });
     }
     
