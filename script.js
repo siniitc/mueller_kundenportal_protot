@@ -569,6 +569,37 @@ function changeQuantity(productId, change) {
     updateOrderButtons();
 }
 
+function removeItem(productId) {
+    const qtyInput = document.getElementById('qty-' + productId);
+    qtyInput.value = 0;
+    
+    // Reset color selection to first option
+    const firstColorRadio = document.querySelector(`input[name="color-${productId}"]`);
+    if (firstColorRadio) {
+        firstColorRadio.checked = true;
+    }
+    
+    updateCartTotal();
+    updateOrderButtons();
+    showToast('Artikel wurde entfernt', 'info');
+}
+
+function updateOrderButtons() {
+    const confirmBtn = document.getElementById('confirmOrderBtn');
+    const totalItems = currentCart.reduce((sum, item) => sum + item.quantity, 0);
+    
+    if (confirmBtn) {
+        confirmBtn.disabled = totalItems === 0;
+        if (totalItems === 0) {
+            confirmBtn.style.opacity = '0.5';
+            confirmBtn.style.cursor = 'not-allowed';
+        } else {
+            confirmBtn.style.opacity = '1';
+            confirmBtn.style.cursor = 'pointer';
+        }
+    }
+}
+
 function updateCartTotal() {
     let total = 0;
     let itemCount = 0;

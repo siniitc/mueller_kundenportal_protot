@@ -67,6 +67,7 @@
                                 <button type="button" class="qty-btn" onclick="changeQuantity('lsz19', -1)">-</button>
                                 <input type="number" id="qty-lsz19" value="0" min="0" max="50" readonly>
                                 <button type="button" class="qty-btn" onclick="changeQuantity('lsz19', 1)">+</button>
+                                <button type="button" class="delete-btn" onclick="removeItem('lsz19')" title="Artikel entfernen">🗑️</button>
                             </div>
                         </div>
                     </div>
@@ -111,6 +112,7 @@
                                 <button type="button" class="qty-btn" onclick="changeQuantity('kh03', -1)">-</button>
                                 <input type="number" id="qty-kh03" value="0" min="0" max="50" readonly>
                                 <button type="button" class="qty-btn" onclick="changeQuantity('kh03', 1)">+</button>
+                                <button type="button" class="delete-btn" onclick="removeItem('kh03')" title="Artikel entfernen">🗑️</button>
                             </div>
                         </div>
                     </div>
@@ -155,6 +157,7 @@
                                 <button type="button" class="qty-btn" onclick="changeQuantity('kj16', -1)">-</button>
                                 <input type="number" id="qty-kj16" value="0" min="0" max="50" readonly>
                                 <button type="button" class="qty-btn" onclick="changeQuantity('kj16', 1)">+</button>
+                                <button type="button" class="delete-btn" onclick="removeItem('kj16')" title="Artikel entfernen">🗑️</button>
                             </div>
                         </div>
                     </div>
@@ -199,6 +202,7 @@
                                 <button type="button" class="qty-btn" onclick="changeQuantity('bnd01', -1)">-</button>
                                 <input type="number" id="qty-bnd01" value="0" min="0" max="50" readonly>
                                 <button type="button" class="qty-btn" onclick="changeQuantity('bnd01', 1)">+</button>
+                                <button type="button" class="delete-btn" onclick="removeItem('bnd01')" title="Artikel entfernen">🗑️</button>
                             </div>
                         </div>
                     </div>
@@ -243,6 +247,7 @@
                                 <button type="button" class="qty-btn" onclick="changeQuantity('lsz18', -1)">-</button>
                                 <input type="number" id="qty-lsz18" value="0" min="0" max="50" readonly>
                                 <button type="button" class="qty-btn" onclick="changeQuantity('lsz18', 1)">+</button>
+                                <button type="button" class="delete-btn" onclick="removeItem('lsz18')" title="Artikel entfernen">🗑️</button>
                             </div>
                         </div>
                     </div>
@@ -256,6 +261,7 @@
 
         <div class="order-actions">
             <button class="btn" onclick="goToDashboard()">Zurück zum Dashboard</button>
+            <button class="btn" onclick="showOrderOverview()" id="confirmOrderBtn" disabled>Bestellung bestätigen</button>
         </div>
     </main>
 
