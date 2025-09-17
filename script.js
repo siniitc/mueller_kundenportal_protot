@@ -742,8 +742,11 @@ function confirmOrder() {
     const savedCart = localStorage.getItem('currentCart');
     const cart = savedCart ? JSON.parse(savedCart) : [];
     
-    if (cart.length > 0) {
-        const totalAmount = cart.reduce((sum, item) => sum + item.total, 0);
+    // Filter out items with quantity 0
+    const filteredCart = cart.filter(item => item.quantity > 0);
+    
+    if (filteredCart.length > 0) {
+        const totalAmount = filteredCart.reduce((sum, item) => sum + item.total, 0);
         
         // Check budget
         const availableBudget = 3000;
@@ -762,7 +765,7 @@ function confirmOrder() {
                 date: new Date().toLocaleDateString('de-DE'),
                 status: 'in-progress',
                 total: totalAmount,
-                items: [...cart]
+                items: [...filteredCart]
             };
             
             // Add to order history
